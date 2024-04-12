@@ -12,7 +12,7 @@ module.exports = {
     const guildSettings = global.bot.guildSettingsCache[message.channel.guild.id]
     if (!guildSettings) await cacheGuild(message.channel.guild.id)
     if (global.bot.guildSettingsCache[message.channel.guild.id].isChannelIgnored(message.channel.id)) return
-    let cachedMessage = await getMessageFromBatch(message.id)
+    let cachedMessage = getMessageFromBatch(message.id)
     if (!cachedMessage) {
       cachedMessage = await getMessageFromDB(message.id)
     }

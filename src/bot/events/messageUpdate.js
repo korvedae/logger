@@ -13,7 +13,7 @@ module.exports = {
     if (!newMessage.channel.guild || !newMessage.author) return
     if (newMessage.author.id === global.bot.user.id) return
     const member = newMessage.channel.guild.members.get(newMessage.author.id) // this member "should" be in cache at all times
-    oldMessage = await getMessageFromBatch(newMessage.id)
+    oldMessage = getMessageFromBatch(newMessage.id)
     if (!oldMessage) {
       oldMessage = await getMessageFromDB(newMessage.id)
     }
