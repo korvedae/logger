@@ -58,7 +58,7 @@ module.exports = {
           interaction.editOriginalMessage({
             embeds: [{
               title: 'Success',
-              description: `Archived ${fetchedMessages.length} messages: ${PASTE_SITE_ROOT_URL}/${res.body.key}.txt`,
+              description: `Archived ${fetchedMessages.length} messages: ${process.env.PASTE_SITE_ROOT_URL}/${res.body.key}.txt`,
               thumbnail: {
                 url: interaction.member.user.dynamicAvatarURL(null, 64)
               },
