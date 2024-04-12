@@ -46,7 +46,7 @@ async function cacheMessage (message) {
     message.content = aes.encrypt(escape(message.content.replace(/~/g, '\\~'), ['angle brackets']))
   }
   // Encrypt Images (max 10)
-  let images = message.attachments.filter(attachment => attachment.content_type.startsWith("image"))
+  let images = message.attachments.filter(attachment => attachment.content_type?.startsWith("image"))
   if (images.length === 0)
     message.attachment_b64 = ""
   else if (images.length > 10) {
