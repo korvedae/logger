@@ -19,6 +19,7 @@ module.exports = {
     }
     if (!oldMessage) return
     if (newMessage.author.bot && !global.bot.global.guildSettingsCache[newMessage.channel.guild.id].isLogBots()) return
+    if (!((newMessage.content !== oldMessage.content) || (newMessage.attachments.length !== oldMessage.attachments.length))) return // only process edits to content/attachments
     await processMessage(newMessage, oldMessage)
 
     async function processMessage (newMessage, oldMessage) {
