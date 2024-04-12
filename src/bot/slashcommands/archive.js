@@ -51,6 +51,7 @@ module.exports = {
     } catch (_) {}
     sa
       .post(`${process.env.PASTE_SITE_ROOT_URL}/documents`)
+      .set('Authorization', process.env.PASTE_SITE_TOKEN ?? '')
       .set('Content-Type', 'text/plain')
       .send(pasteString || 'No messages were able to be archived')
       .end((err, res) => {
