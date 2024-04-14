@@ -22,11 +22,11 @@ function processCommand (message, commandName, suffix) {
   } else if (command.noThread && (message.channel.type === 10 || message.channel.type === 11 || message.channel.type === 12)) {
     message.channel.createMessage('You cannot use this command in a thread!')
     return
-  } else if (message.author.id === process.env.CREATOR_IDS) {
+  } else if (process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
     global.logger.info(`Developer override by ${message.author.username}#${message.author.discriminator} at ${new Date().toUTCString()}`)
     command.func(message, suffix)
     return
-  } else if (command.type === 'creator' && !process.env.CREATOR_IDS.includes(message.author.id)) {
+  } else if (command.type === 'creator' && !process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
     message.channel.createMessage('This command is creator only!')
     return
   } else if (command.type === 'admin' && !(message.member.permissions.has('administrator' || message.author.id === message.channel.guild.ownerID))) {
