@@ -50,7 +50,7 @@ module.exports = {
       })
     } catch (_) {}
     sa
-      .post(`${process.env.PASTE_SITE_ROOT_URL}/documents`)
+      .post(`${process.env.PASTE_SITE_ROOT_URL.endsWith("/") ? process.env.PASTE_SITE_ROOT_URL.slice(0, -1) : process.env.PASTE_SITE_ROOT_URL}/documents`)
       .set('Authorization', process.env.PASTE_SITE_TOKEN ?? '')
       .set('Content-Type', 'text/plain')
       .send(pasteString || 'No messages were able to be archived')
@@ -59,7 +59,7 @@ module.exports = {
           interaction.editOriginalMessage({
             embeds: [{
               title: 'Success',
-              description: `Archived ${fetchedMessages.length} messages: ${process.env.PASTE_SITE_ROOT_URL}/${res.body.key}.txt`,
+              description: `Archived ${fetchedMessages.length} messages: ${process.env.PASTE_SITE_ROOT_URL.endsWith("/") ? process.env.PASTE_SITE_ROOT_URL.slice(0, -1) : process.env.PASTE_SITE_ROOT_URL}/${res.body.key}.txt`,
               thumbnail: {
                 url: interaction.member.user.dynamicAvatarURL(null, 64)
               },
