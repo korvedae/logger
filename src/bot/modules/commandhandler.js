@@ -23,7 +23,7 @@ function processCommand (message, commandName, suffix) {
     message.channel.createMessage('You cannot use this command in a thread!')
     return
   } else if (process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
-    global.logger.info(`Developer override by ${message.author.username}#${message.author.discriminator} at ${new Date().toUTCString()}`)
+    global.logger.info(`Developer override by ${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`} at ${new Date().toUTCString()}`)
     command.func(message, suffix)
     return
   } else if (command.type === 'creator' && !process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
@@ -39,7 +39,7 @@ function processCommand (message, commandName, suffix) {
     message.channel.createMessage(`This command requires you to be the owner of the server, or have the following permissions: ${command.perms.join(', ')}`)
     return
   }
-  global.logger.info(`${message.author.username}#${message.author.discriminator} (${message.author.id}) in ${message.channel.id} sent ${commandName} with the args "${suffix}". The guild is called "${message.channel.guild.name}", owned by ${message.channel.guild.ownerID} and has ${message.channel.guild.memberCount} members.`)
+  global.logger.info(`${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`} (${message.author.id}) in ${message.channel.id} sent ${commandName} with the args "${suffix}". The guild is called "${message.channel.guild.name}", owned by ${message.channel.guild.ownerID} and has ${message.channel.guild.memberCount} members.`)
   statAggregator.incrementCommand(command.name)
   command.func(message, suffix)
 }

@@ -105,7 +105,7 @@ module.exports = {
           }
           const guild = global.bot.guilds.get(interaction.guildID)
           if (guild) {
-            global.logger.info(`${interaction.member.username}#${interaction.member.discriminator} (${interaction.member.id}) in ${interaction.channel.id} sent /${command.name}. The guild is called "${guild.name}", owned by ${guild.ownerID} and has ${guild.memberCount} members.`)
+            global.logger.info(`${interaction.member.username}${interaction.member.discriminator === '0' ? '' : `#${interaction.member.discriminator}`} (${interaction.member.id}) in ${interaction.channel.id} sent /${command.name}. The guild is called "${guild.name}", owned by ${guild.ownerID} and has ${guild.memberCount} members.`)
             try {
               command.func(interaction)
             } catch (commandError) {

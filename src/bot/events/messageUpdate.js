@@ -28,10 +28,10 @@ module.exports = {
         eventName: 'messageUpdate',
         embeds: [{
           author: {
-            name: `${newMessage.author.username}#${newMessage.author.discriminator} ${member && member.nick ? `(${member.nick})` : ''}`,
+            name: `${newMessage.author.username}${newMessage.author.discriminator === '0' ? '' : `#${newMessage.author.discriminator}`} ${member && member.nick ? `(${member.nick})` : ''}`,
             icon_url: newMessage.author.avatarURL
           },
-          description: `**${newMessage.author.username}#${newMessage.author.discriminator}** ${member && member.nick ? `(${member.nick})` : ''} updated their message in: ${newMessage.channel.name}.`,
+          description: `**${newMessage.author.username}${newMessage.author.discriminator === '0' ? '' : `#${newMessage.author.discriminator}`}** ${member && member.nick ? `(${member.nick})` : ''} updated their message in: ${newMessage.channel.name}.`,
           fields: [
             {
               name: `${newMessage.channel.type === 10 || newMessage.channel.type === 11 || newMessage.channel.type === 12 ? 'Thread' : 'Channel'}`,

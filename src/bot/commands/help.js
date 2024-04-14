@@ -36,7 +36,7 @@ module.exports = {
           url: global.bot.user.avatarURL
         },
         author: {
-          name: `${message.author.username}#${message.author.discriminator}`,
+          name: `${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`}`,
           icon_url: message.author.avatarURL
         },
         fields: []

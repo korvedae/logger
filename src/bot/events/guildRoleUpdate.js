@@ -66,7 +66,7 @@ module.exports = {
           value: `\`\`\`ini\nRole = ${role.id}\nPerpetrator = ${log.user.id}\`\`\``
         })
         guildRoleUpdateEvent.embeds[0].author = {
-          name: `${log.user.username}#${log.user.discriminator}`,
+          name: `${log.user.username}${log.user.discriminator === '0' ? '' : `#${log.user.discriminator}`}`,
           icon_url: log.user.avatarURL
         }
         if (guildRoleUpdateEvent.embeds[0].fields.length === 1) return

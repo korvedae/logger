@@ -15,7 +15,7 @@ module.exports = {
             text: `${global.bot.user.username}#${global.bot.user.discriminator}`
           },
           author: {
-            name: `${message.author.username}#${message.author.discriminator}`,
+            name: `${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`}`,
             icon_url: message.author.avatarURL
           }
         }]
@@ -33,7 +33,7 @@ module.exports = {
           text: `${global.bot.user.username}#${global.bot.user.discriminator}`
         },
         author: {
-          name: `${message.author.username}#${message.author.discriminator}`,
+          name: `${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`}`,
           icon_url: message.author.avatarURL
         }
       }]

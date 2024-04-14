@@ -202,7 +202,7 @@ module.exports = {
     }
 
     if (log && user) {
-      channelUpdateEvent.embeds[0].author.name = `${user.username}#${user.discriminator}`
+      channelUpdateEvent.embeds[0].author.name = `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`
       channelUpdateEvent.embeds[0].author.icon_url = user.avatarURL
       if (channel.type === 13) {
         channelUpdateEvent.embeds[0].description = `Stage Channel **${channel.name}** was ${channel.topic === null ? 'closed' : 'opened'}`

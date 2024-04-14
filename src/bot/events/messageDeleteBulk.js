@@ -47,7 +47,7 @@ async function paste (messages, guildID) {
         avatarURL: '<no avatar>'
       }
     }
-    return `${globalUser.username}#${globalUser.discriminator} (${m.author_id}) | (${globalUser.avatarURL}) | ${new Date(m.ts).toUTCString()}: ${m.content}`
+    return `${globalUser.username}${globalUser.discriminator === '0' ? '' : `#${globalUser.discriminator}`} (${m.author_id}) | (${globalUser.avatarURL}) | ${new Date(m.ts).toUTCString()}: ${m.content}`
   }).join('\r\n')
   if (pasteString) {
     sa
