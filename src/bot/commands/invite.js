@@ -2,7 +2,7 @@ module.exports = {
   func: async message => {
     message.channel.createMessage({
       embeds: [{
-        description: `Hi, you can invite me via [this link](https://discord.com/oauth2/authorize?client_id=1223274176786206853). To see what invite is used for a member joining, you MUST grant **manage channels** and **manage server** for it to work (Discord does not send invite info to the bot otherwise)!`,
+        description: `Hi, you can invite me via [this link](https://discord.com/oauth2/authorize?client_id=${global.bot.user.id}). To see what invite is used for a member joining, you MUST grant **manage channels** and **manage server** for it to work (Discord does not send invite info to the bot otherwise)!`,
         color: 3553599,
         timestamp: new Date(),
         footer: {
