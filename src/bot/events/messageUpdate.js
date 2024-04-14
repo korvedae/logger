@@ -9,7 +9,7 @@ const escape = require('markdown-escape')
 module.exports = {
   name: 'messageUpdate',
   type: 'on',
-  handle: async (newMessage, oldMessage) => {
+  handle: async (newMessage) => {
     if (!newMessage.channel.guild || !newMessage.author) return
     if (newMessage.author.id === global.bot.user.id) return
     const member = newMessage.channel.guild.members.get(newMessage.author.id) // this member "should" be in cache at all times
@@ -19,7 +19,7 @@ module.exports = {
     }
     if (!oldMessage) return
     if (newMessage.author.bot && !global.bot.global.guildSettingsCache[newMessage.channel.guild.id].isLogBots()) return
-    if (!((newMessage.content !== oldMessage.content) || (newMessage.attachments.length !== oldMessage.attachments?.length))) return // only process edits to content/attachments
+    if ((newMessage.content === oldMessage.content) && (newMessage.attachments.length === oldMessage.attachment_b64.split("|").filter(Boolean).length)) return // content/attachments didn't change so don't process
     await processMessage(newMessage, oldMessage)
 
     async function processMessage (newMessage, oldMessage) {
