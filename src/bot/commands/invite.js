@@ -9,7 +9,7 @@ module.exports = {
         timestamp: new Date(),
         footer: {
           icon_url: global.bot.user.avatarURL,
-          text: displayUsername(global.bot.user)
+          text: global.botUserUsername
         },
         author: {
           name: displayUsername(message.author),

@@ -17,6 +17,9 @@ function processCommand (message, commandName, suffix) {
   if (!command) return
   const bp = message.channel.permissionsOf(global.bot.user.id).json
   if (!bp.viewChannel || !bp.sendMessages) return
+
+  const messageAuthorUsername = displayUsername(message.author)
+
   if ((command.noDM || command.perm || command.type === 'admin') && !message.channel.guild) {
     message.channel.createMessage('You cannot use this command in a DM!')
     return
@@ -24,7 +27,7 @@ function processCommand (message, commandName, suffix) {
     message.channel.createMessage('You cannot use this command in a thread!')
     return
   } else if (process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
-    global.logger.info(`Developer override by ${displayUsername(message.author)} at ${new Date().toUTCString()}`)
+    global.logger.info(`Developer override by ${messageAuthorUsername} at ${new Date().toUTCString()}`)
     command.func(message, suffix)
     return
   } else if (command.type === 'creator' && !process.env.CREATOR_IDS.split(",").includes(message.author.id)) {
@@ -40,7 +43,7 @@ function processCommand (message, commandName, suffix) {
     message.channel.createMessage(`This command requires you to be the owner of the server, or have the following permissions: ${command.perms.join(', ')}`)
     return
   }
-  global.logger.info(`${displayUsername(message.author)} (${message.author.id}) in ${message.channel.id} sent ${commandName} with the args "${suffix}". The guild is called "${message.channel.guild.name}", owned by ${message.channel.guild.ownerID} and has ${message.channel.guild.memberCount} members.`)
+  global.logger.info(`${messageAuthorUsername} (${message.author.id}) in ${message.channel.id} sent ${commandName} with the args "${suffix}". The guild is called "${message.channel.guild.name}", owned by ${message.channel.guild.ownerID} and has ${message.channel.guild.memberCount} members.`)
   statAggregator.incrementCommand(command.name)
   command.func(message, suffix)
 }

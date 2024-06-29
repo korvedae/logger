@@ -62,13 +62,15 @@ module.exports = {
       const logs = await guild.getAuditLog({ limit: 5, actionType: 31 })
       const log = logs.entries.find(e => Date.now() - ((e.id / 4194304) + 1420070400000) < 3000)
       if (log && log.user) {
+        const perp = log.user
+
         guildRoleUpdateEvent.embeds[0].fields.push({
           name: 'ID',
-          value: `\`\`\`ini\nRole = ${role.id}\nPerpetrator = ${log.user.id}\`\`\``
+          value: `\`\`\`ini\nRole = ${role.id}\nPerpetrator = ${perp.id}\`\`\``
         })
         guildRoleUpdateEvent.embeds[0].author = {
-          name: displayUsername(log.user),
-          icon_url: log.user.avatarURL
+          name: displayUsername(perp),
+          icon_url: perp.avatarURL
         }
         if (guildRoleUpdateEvent.embeds[0].fields.length === 1) return
         await send(guildRoleUpdateEvent)

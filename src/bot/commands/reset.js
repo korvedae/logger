@@ -5,17 +5,19 @@ const createGuild = require('../../db/interfaces/postgres/create').createGuild
 
 module.exports = {
   func: async message => {
+    const messageAuthorUsername = displayUsername(message.author)
+
     const msg = await message.channel.createMessage({
       embeds: [{
-        description: `Are you absolutely sure, ${displayUsername(message.author)} (${message.author.id})? Reply *yes* if so.`,
+        description: `Are you absolutely sure, ${messageAuthorUsername} (${message.author.id})? Reply *yes* if so.`,
         color: 3553599,
         timestamp: new Date(),
         footer: {
           icon_url: global.bot.user.avatarURL,
-          text: displayUsername(global.bot.user)
+          text: global.botUserUsername
         },
         author: {
-          name: displayUsername(message.author),
+          name: displayUsername(messageAuthorUsername),
           icon_url: message.author.avatarURL
         }
       }]
@@ -34,10 +36,10 @@ module.exports = {
                 timestamp: new Date(),
                 footer: {
                   icon_url: global.bot.user.avatarURL,
-                  text: displayUsername(global.bot.user)
+                  text: global.botUserUsername
                 },
                 author: {
-                  name: displayUsername(message.author),
+                  name: messageAuthorUsername,
                   icon_url: message.author.avatarURL
                 }
               }]
@@ -54,10 +56,10 @@ module.exports = {
             timestamp: new Date(),
             footer: {
               icon_url: global.bot.user.avatarURL,
-              text: displayUsername(global.bot.user)
+              text: global.botUserUsername
             },
             author: {
-              name: displayUsername(message.author),
+              name: messageAuthorUsername,
               icon_url: message.author.avatarURL
             }
           }]

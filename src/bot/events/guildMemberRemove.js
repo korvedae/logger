@@ -7,6 +7,8 @@ module.exports = {
   name: 'guildMemberRemove',
   type: 'on',
   handle: async (guild, member) => {
+    const memberUsername = displayUsername(member)
+
     if (!member.roles) {
       member = new User({ id: member.id, ...member.user }, global.bot)
     }
@@ -32,23 +34,23 @@ module.exports = {
       log = logs.entries.find(e => e.targetID === member.id && (Date.now() - ((e.id / 4194304) + 1420070400000)) < 3000)
     }
     if (log && log.user) {
-      const user = log.user
-      if (!user) return // !!!! not good
+      const perp = log.user
+      if (!perp) return // !!!! not good
       event.eventName = 'guildMemberKick'
       event.embeds = [{
         author: {
-          name: `${displayUsername(member)} ${member.nick ? `(${member.nick})` : ''}`,
+          name: `${memberUsername} ${member.nick ? `(${member.nick})` : ''}`,
           icon_url: member.avatarURL
         },
         color: 16711680,
-        description: `${displayUsername(member)} ${member.nick ? `(${member.nick})` : ''} was kicked`,
+        description: `${memberUsername} ${member.nick ? `(${member.nick})` : ''} was kicked`,
         fields: [{
           name: 'User Information',
-          value: `${displayUsername(member)} (${member.id}) ${member.mention} ${member.bot ? '\nIs a bot' : ''}`
+          value: `${memberUsername} (${member.id}) ${member.mention} ${member.bot ? '\nIs a bot' : ''}`
         }],
         footer: {
-          text: displayUsername(user),
-          icon_url: user.avatarURL
+          text: displayUsername(perp),
+          icon_url: perp.avatarURL
         }
       }]
       if (member.roles) {
@@ -65,21 +67,21 @@ module.exports = {
         value: log.reason ? log.reason : 'None provided'
       }, {
         name: 'ID',
-        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${user.id}\`\`\``
+        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${perp.id}\`\`\``
       })
       return send(event)
     } else {
       // TODO: redo purge audit log stuff eventually (update: copy from patron bot eventually)
       event.embeds = [{
         author: {
-          name: displayUsername(member),
+          name: memberUsername,
           icon_url: member.avatarURL
         },
         color: 16711680,
-        description: `${displayUsername(member)} left the server`,
+        description: `${memberUsername} left the server`,
         fields: [{
           name: 'User Information',
-          value: `${displayUsername(member)} (${member.id}) ${member.mention} ${member.bot ? '\nIs a bot' : ''}`
+          value: `${memberUsername} (${member.id}) ${member.mention} ${member.bot ? '\nIs a bot' : ''}`
         }]
       }]
       if (member.roles) {

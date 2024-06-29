@@ -6,15 +6,18 @@ module.exports = {
   type: 'on',
   handle: async (member, channel, oldChannel) => {
     if (global.bot.guildSettingsCache[channel.guild.id].isChannelIgnored(channel.id)) return
+
+    const memberUsername = displayUsername(member)
+
     await send({
       guildID: channel.guild.id,
       eventName: 'voiceChannelSwitch',
       embeds: [{
         author: {
-          name: `${displayUsername(member)} ${member.nick ? `(${member.nick})` : ''}`,
+          name: `${memberUsername} ${member.nick ? `(${member.nick})` : ''}`,
           icon_url: member.avatarURL
         },
-        description: `**${displayUsername(member)}** ${member.nick ? `(${member.nick})` : ''} moved from <#${oldChannel.id}> (${oldChannel.name}) to <#${channel.id}> (${channel.name}).`,
+        description: `**${memberUsername}** ${member.nick ? `(${member.nick})` : ''} moved from <#${oldChannel.id}> (${oldChannel.name}) to <#${channel.id}> (${channel.name}).`,
         fields: [{
           name: 'Current channel they are in',
           value: `<#${channel.id}> (${channel.name})`

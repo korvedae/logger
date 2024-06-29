@@ -4,6 +4,8 @@ const eventList = require('../utils/constants').ALL_EVENTS
 
 module.exports = {
   func: async (message, suffix) => {
+    const messageAuthorUsername = displayUsername(message.author)
+
     const split = suffix.split(' ')
     if (!eventList.includes(split[0])) {
       return message.channel.createMessage({
@@ -13,10 +15,10 @@ module.exports = {
           timestamp: new Date(),
           footer: {
             icon_url: global.bot.user.avatarURL,
-            text: displayUsername(global.bot.user)
+            text: global.botUserUsername
           },
           author: {
-            name: displayUsername(message.author),
+            name: messageAuthorUsername,
             icon_url: message.author.avatarURL
           }
         }]
@@ -31,10 +33,10 @@ module.exports = {
         timestamp: new Date(),
         footer: {
           icon_url: global.bot.user.avatarURL,
-          text: displayUsername(global.bot.user)
+          text: global.botUserUsername
         },
         author: {
-          name: displayUsername(message.author),
+          name: messageAuthorUsername,
           icon_url: message.author.avatarURL
         }
       }]

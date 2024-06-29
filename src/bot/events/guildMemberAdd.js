@@ -6,18 +6,20 @@ module.exports = {
   name: 'guildMemberAdd',
   type: 'on',
   handle: async (guild, member) => {
+    const memberUsername = displayUsername(member)
+
     const GMAEvent = {
       guildID: guild.id,
       eventName: 'guildMemberAdd',
       embeds: [{
         author: {
-          name: displayUsername(member),
+          name: memberUsername,
           icon_url: member.avatarURL
         },
         description: `<@${member.id}> joined `,
         fields: [{
           name: 'Name',
-          value: `${displayUsername(member)} (${member.id}) ${member.mention}`
+          value: `${memberUsername} (${member.id}) ${member.mention}`
         }, {
           name: 'Joined At',
           value: `<t:${Math.round(Date.now() / 1000)}:F>`

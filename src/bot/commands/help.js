@@ -32,7 +32,7 @@ module.exports = {
         timestamp: new Date(),
         footer: {
           icon_url: global.bot.user.avatarURL,
-          text: displayUsername(global.bot.user)
+          text: global.botUserUsername
         },
         thumbnail: {
           url: global.bot.user.avatarURL

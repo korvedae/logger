@@ -5,18 +5,20 @@ module.exports = {
   name: 'guildBanRemove',
   type: 'on',
   handle: async (guild, user) => {
+    const userUsername = displayUsername(user)
+
     const guildBanRemoveEvent = {
       guildID: guild.id,
       eventName: 'guildBanRemove',
       embeds: [{
         author: {
-          name: displayUsername(user),
+          name: userUsername,
           icon_url: user.avatarURL
         },
-        description: `${displayUsername(user)} was unbanned`,
+        description: `${userUsername} was unbanned`,
         fields: [{
           name: 'User Information',
-          value: `${displayUsername(user)} (${user.id}) ${user.mention} ${user.bot ? '\nIs a bot' : ''}`
+          value: `${userUsername} (${user.id}) ${user.mention} ${user.bot ? '\nIs a bot' : ''}`
         }, {
           name: 'Reason',
           value: 'None provided'

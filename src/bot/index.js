@@ -5,6 +5,7 @@ const redisLock = require('../db/interfaces/redis/redislock')
 const indexCommands = require('../miscellaneous/commandIndexer')
 const cacheGuildInfo = require('./utils/cacheGuildSettings')
 const addBotListeners = require('./utils/addbotlisteners')
+const { displayUsername } = require('./utils/constants')
 
 require('dotenv').config()
 
@@ -69,6 +70,7 @@ async function init () {
     defaultImageFormat: 'png',
     ...(process.env.USE_MAX_CONCURRENCY === 'true' ? { useMaxConcurrency: true } : {})
   })
+  global.botUserUsername = displayUsername(global.bot.user)
 
   global.bot.editStatus('dnd', {
     name: 'Bot is booting'

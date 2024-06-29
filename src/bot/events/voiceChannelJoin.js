@@ -6,15 +6,18 @@ module.exports = {
   type: 'on',
   handle: async (member, channel) => {
     if (global.bot.guildSettingsCache[channel.guild.id].isChannelIgnored(channel.id)) return
+
+    const memberUsername = displayUsername(member)
+
     await send({
       guildID: channel.guild.id,
       eventName: 'voiceChannelJoin',
       embeds: [{
         author: {
-          name: `${displayUsername(member)} ${member.nick ? `(${member.nick})` : ''}`,
+          name: `${memberUsername} ${member.nick ? `(${member.nick})` : ''}`,
           icon_url: member.avatarURL
         },
-        description: `**${displayUsername(member)}** joined ${channel.type !== 13 ? 'voice' : 'stage'} channel: ${channel.name}.`,
+        description: `**${memberUsername}** joined ${channel.type !== 13 ? 'voice' : 'stage'} channel: ${channel.name}.`,
         fields: [{
           name: 'Channel',
           value: `<#${channel.id}> (${channel.name})`

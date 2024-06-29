@@ -21,15 +21,18 @@ module.exports = {
     if (!global.bot.guilds.get(guild.id)) { // don't try to log something when the bot isn't in the guild
       return
     }
+
+    const memberUsername = displayUsername(member)
+
     const guildMemberUpdate = {
       guildID: guild.id,
       eventName: 'guildMemberUpdate',
       embeds: [{
         author: {
-          name: displayUsername(member),
+          name: memberUsername,
           icon_url: member.avatarURL
         },
-        description: `${displayUsername(member)} ${member.mention} ${member.nick ? `(${member.nick})` : ''} was updated`,
+        description: `${memberUsername} ${member.mention} ${member.nick ? `(${member.nick})` : ''} was updated`,
         fields: [{
           name: 'Changes',
           value: 'Unknown. Look at the footer to see who updated the affected user.'
@@ -60,9 +63,9 @@ module.exports = {
       await send(guildMemberUpdate)
     } else if (oldMember?.pending && !member.pending && guild.features.includes('MEMBER_VERIFICATION_GATE_ENABLED')) {
       guildMemberUpdate.eventName = 'guildMemberVerify'
-      guildMemberUpdate.embeds[0].description = `${member.mention} (${displayUsername(member)}: \`${member.id}\`) has verified.`
+      guildMemberUpdate.embeds[0].description = `${member.mention} (${memberUsername}: \`${member.id}\`) has verified.`
       guildMemberUpdate.embeds[0].author = {
-        name: `${displayUsername(member)}`,
+        name: `${memberUsername}`,
         icon_url: member.avatarURL
       }
       guildMemberUpdate.embeds[0].color = 0x1ced9a
@@ -78,7 +81,7 @@ module.exports = {
       embedCopy.eventName = 'guildMemberBoostUpdate'
       embedCopy.embeds[0].description = `${member.mention} has ${newMemberHasBoostRole ? 'boosted' : 'stopped boosting'} the server.`
       embedCopy.embeds[0].author = {
-        name: displayUsername(member),
+        name: memberUsername,
         icon_url: member.avatarURL
       }
       embedCopy.embeds[0].color = member.premiumSince ? 0x15cc12 : 0xeb4034
@@ -93,9 +96,9 @@ module.exports = {
     const possibleTimeoutLog = logs.entries.find(e => e.targetID === member.id && e.actionType === 24 && (e.before.communication_disabled_until || e.after.communication_disabled_until) && Date.now() - ((e.id / 4194304) + 1420070400000) < 3000)
     if (possibleRoleLog) {
       possibleRoleLog.guild = []
-      const user = possibleRoleLog.user
-      if (user == null) return
-      if (user.bot && !global.bot.guildSettingsCache[guild.id].isLogBots()) return
+      const perp = possibleRoleLog.user
+      if (perp == null) return
+      if (perp.bot && !global.bot.guildSettingsCache[guild.id].isLogBots()) return
       const added = []
       const removed = []
       let roleColor
@@ -121,29 +124,32 @@ module.exports = {
       }
       guildMemberUpdate.embeds[0].color = roleColor
       guildMemberUpdate.embeds[0].footer = {
-        text: displayUsername(user),
-        icon_url: user.avatarURL
+        text: displayUsername(perp),
+        icon_url: perp.avatarURL
       }
       guildMemberUpdate.embeds[0].fields.push({
         name: 'ID',
-        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${user.id}\`\`\``
+        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${perp.id}\`\`\``
       })
       if (!guildMemberUpdate.embeds[0].fields[0].value) return
       await send(guildMemberUpdate)
     } else if (possibleTimeoutLog) {
-      guildMemberUpdate.embeds[0].description = `${displayUsername(member)} (${member.mention}) ${member.communicationDisabledUntil ? 'was timed out' : 'had their timeout removed'}`
+      const perp = possibleTimeoutLog.user
+      const perpUsername = displayUsername(perp)
+
+      guildMemberUpdate.embeds[0].description = `${memberUsername} (${member.mention}) ${member.communicationDisabledUntil ? 'was timed out' : 'had their timeout removed'}`
       guildMemberUpdate.embeds[0].author = {
-        name: displayUsername(member),
+        name: memberUsername,
         icon_url: member.avatarURL
       }
       guildMemberUpdate.embeds[0].footer = {
-        text: displayUsername(possibleTimeoutLog.user),
-        icon_url: possibleTimeoutLog.user.avatarURL
+        text: perpUsername,
+        icon_url: perp.avatarURL
       }
       guildMemberUpdate.embeds[0].fields = []
       guildMemberUpdate.embeds[0].fields.push({
         name: 'Timeout Creator',
-        value: displayUsername(possibleTimeoutLog.user)
+        value: perpUsername
       })
       if (possibleTimeoutLog.reason) {
         guildMemberUpdate.embeds[0].fields.push({
@@ -164,7 +170,7 @@ module.exports = {
       }
       guildMemberUpdate.embeds[0].fields.push({
         name: 'ID',
-        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${possibleTimeoutLog.user.id}\`\`\``
+        value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${perp.id}\`\`\``
       })
       await send(guildMemberUpdate)
     }

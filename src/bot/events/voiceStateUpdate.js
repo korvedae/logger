@@ -10,15 +10,18 @@ module.exports = {
     if (!state.channelID || oldState.channelID) return
     if ((state.selfDeaf !== oldState.selfDeaf) || (state.selfMute !== oldState.selfMute)) return
     if (global.bot.guildSettingsCache[member.guild.id].isChannelIgnored(state.channelID)) return
+
+    const memberUsername = displayUsername(member)
+
     const voiceStateUpdateEvent = {
       guildID: member.guild.id,
       eventName: 'voiceStateUpdate',
       embeds: [{
         author: {
-          name: `${displayUsername(member)} ${member.nick ? `(${member.nick})` : ''}`,
+          name: `${memberUsername} ${member.nick ? `(${member.nick})` : ''}`,
           icon_url: member.avatarURL
         },
-        description: `**${displayUsername(member)}** ${member.nick ? `(${member.nick})` : ''} had their voice state updated.`,
+        description: `**${memberUsername}** ${member.nick ? `(${member.nick})` : ''} had their voice state updated.`,
         fields: [{
           name: 'Voice Channel',
           value: `<#${channel.id}> (${channel.name})`

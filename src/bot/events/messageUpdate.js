@@ -24,15 +24,17 @@ module.exports = {
     await processMessage(newMessage, oldMessage)
 
     async function processMessage (newMessage, oldMessage) {
+      const messageAuthorUsername = displayUsername(newMessage.author)
+
       const messageUpdateEvent = {
         guildID: newMessage.channel.guild.id,
         eventName: 'messageUpdate',
         embeds: [{
           author: {
-            name: `${displayUsername(newMessage.author)} ${member && member.nick ? `(${member.nick})` : ''}`,
+            name: `${messageAuthorUsername} ${member && member.nick ? `(${member.nick})` : ''}`,
             icon_url: newMessage.author.avatarURL
           },
-          description: `**${displayUsername(newMessage.author)}** ${member && member.nick ? `(${member.nick})` : ''} updated their message in: ${newMessage.channel.name}.`,
+          description: `**${messageAuthorUsername}** ${member && member.nick ? `(${member.nick})` : ''} updated their message in: ${newMessage.channel.name}.`,
           fields: [
             {
               name: `${newMessage.channel.type === 10 || newMessage.channel.type === 11 || newMessage.channel.type === 12 ? 'Thread' : 'Channel'}`,
