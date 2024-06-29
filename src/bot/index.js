@@ -8,13 +8,13 @@ const addBotListeners = require('./utils/addbotlisteners')
 
 require('dotenv').config()
 
-if (process.env.SENTRY_URI) {
+if (process.env.RAVEN_URI) {
   Sentry.init({
-    dsn: process.env.SENTRY_URI,
+    dsn: process.env.RAVEN_URI,
     maxBreadcrumbs: 1
   })
 } else {
-  global.logger.warn('No Sentry URI provided. Error logging will be restricted to messages only.')
+  global.logger.warn('No Sentry URI provided via the RAVEN_URI env variable. Error logging will be restricted to messages only.')
 }
 
 function connect () {
