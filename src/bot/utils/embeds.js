@@ -1,13 +1,15 @@
+const { displayUsername } = require("./constants")
+
 module.exports = {
   getEmbedFooter (user) {
     return {
-      text: `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`,
+      text: displayUsername(user),
       icon_url: user.dynamicAvatarURL(null, 64)
     }
   },
   getAuthorField (user) {
     return {
-      name: `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`,
+      name: displayUsername(user),
       icon_url: user.avatarURL
     }
   }

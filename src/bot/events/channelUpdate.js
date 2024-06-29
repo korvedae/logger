@@ -1,6 +1,8 @@
 const { Permission } = require('eris')
-const send = require('../modules/webhooksender')
 const escape = require('markdown-escape')
+const send = require('../modules/webhooksender')
+const { displayUsername } = require('../utils/constants')
+
 const CHANNEL_TYPE_MAP = {
   0: 'Text channel',
   2: 'Voice channel',
@@ -202,7 +204,7 @@ module.exports = {
     }
 
     if (log && user) {
-      channelUpdateEvent.embeds[0].author.name = `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`
+      channelUpdateEvent.embeds[0].author.name = displayUsername(user)
       channelUpdateEvent.embeds[0].author.icon_url = user.avatarURL
       if (channel.type === 13) {
         channelUpdateEvent.embeds[0].description = `Stage Channel **${channel.name}** was ${channel.topic === null ? 'closed' : 'opened'}`

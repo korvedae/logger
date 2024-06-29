@@ -1,7 +1,7 @@
 const sa = require('superagent')
 const getMessagesByIds = require('../../db/interfaces/postgres/read').getMessagesByIds
 const send = require('../modules/webhooksender')
-const { EMBED_COLORS } = require('../utils/constants')
+const { EMBED_COLORS, displayUsername } = require('../utils/constants')
 
 module.exports = {
   name: 'messageDeleteBulk',
@@ -47,7 +47,7 @@ async function paste (messages, guildID) {
         avatarURL: '<no avatar>'
       }
     }
-    return `${globalUser.username}${globalUser.discriminator === '0' ? '' : `#${globalUser.discriminator}`} (${m.author_id}) | (${globalUser.avatarURL}) | ${new Date(m.ts).toUTCString()}: ${m.content}`
+    return `${displayUsername(globalUser)} (${m.author_id}) | (${globalUser.avatarURL}) | ${new Date(m.ts).toUTCString()}: ${m.content}`
   }).join('\r\n')
   if (pasteString) {
     sa

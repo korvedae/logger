@@ -1,4 +1,5 @@
 const send = require('../modules/webhooksender')
+const { displayUsername } = require('../utils/constants')
 
 module.exports = {
   name: 'guildBanAdd',
@@ -9,13 +10,13 @@ module.exports = {
       eventName: 'guildBanAdd',
       embeds: [{
         author: {
-          name: `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`,
+          name: displayUsername(user),
           icon_url: user.avatarURL
         },
-        description: `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`} was banned`,
+        description: `${displayUsername(user)} was banned`,
         fields: [{
           name: 'User Information',
-          value: `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`} (${user.id}) ${user.mention} ${user.bot ? '\nIs a bot' : ''}`
+          value: `${displayUsername(user)} (${user.id}) ${user.mention} ${user.bot ? '\nIs a bot' : ''}`
         }, {
           name: 'Reason',
           value: 'None provided'
@@ -28,9 +29,9 @@ module.exports = {
     }
     /*
      * Race condition time ladies and gentlemen:
-     * Why the 1 second wait from when the event is received vs fetching audit logs?
+     * Why the 5 second wait from when the event is received vs fetching audit logs?
      * The bot fetches audit logs for the ban entry, but Discord is behind on publishing it.
-     * The 1 second wait makes sure the bot gets the new entry on time.
+     * The 5 second wait makes sure the bot gets the new entry on time.
      * Thanks Discord.
     */
     const actionStartedTime = new Date()
@@ -50,7 +51,7 @@ module.exports = {
       if (log.reason) guildBanAddEvent.embeds[0].fields[1].value = log.reason
       guildBanAddEvent.embeds[0].fields[2].value = `\`\`\`ini\nUser = ${user.id}\nPerpetrator = ${perp.id}\`\`\``
       guildBanAddEvent.embeds[0].footer = {
-        text: `${perp.username}${perp.discriminator === '0' ? '' : `#${perp.discriminator}`}`,
+        text: displayUsername(perp),
         icon_url: perp.avatarURL
       }
       await send(guildBanAddEvent)

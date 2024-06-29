@@ -1,4 +1,5 @@
 const disableEvent = require('../../db/interfaces/postgres/update').disableEvent
+const { displayUsername } = require('../utils/constants')
 const eventList = require('../utils/constants').ALL_EVENTS
 
 module.exports = {
@@ -12,10 +13,10 @@ module.exports = {
           timestamp: new Date(),
           footer: {
             icon_url: global.bot.user.avatarURL,
-            text: `${global.bot.user.username}#${global.bot.user.discriminator}`
+            text: displayUsername(global.bot.user)
           },
           author: {
-            name: `${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`}`,
+            name: displayUsername(message.author),
             icon_url: message.author.avatarURL
           }
         }]
@@ -30,10 +31,10 @@ module.exports = {
         timestamp: new Date(),
         footer: {
           icon_url: global.bot.user.avatarURL,
-          text: `${global.bot.user.username}#${global.bot.user.discriminator}`
+          text: displayUsername(global.bot.user)
         },
         author: {
-          name: `${message.author.username}${message.author.discriminator === '0' ? '' : `#${message.author.discriminator}`}`,
+          name: displayUsername(message.author),
           icon_url: message.author.avatarURL
         }
       }]
