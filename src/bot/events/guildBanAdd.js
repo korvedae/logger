@@ -1,6 +1,6 @@
 const send = require('../modules/webhooksender')
 const { displayUsername } = require('../utils/constants')
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 
 module.exports = {
   name: 'guildBanAdd',
@@ -12,7 +12,7 @@ module.exports = {
       guildID: guild.id,
       eventName: 'guildBanAdd',
       embeds: [{
-        author: getAuthorField(user),
+        author: buildEmbedAuthorField(user),
         description: `${userUsername} was banned`,
         fields: [{
           name: 'User Information',
@@ -50,7 +50,7 @@ module.exports = {
       const perp = log.user
       if (log.reason) guildBanAddEvent.embeds[0].fields[1].value = log.reason
       guildBanAddEvent.embeds[0].fields[2].value = `\`\`\`ini\nUser = ${user.id}\nPerpetrator = ${perp.id}\`\`\``
-      guildBanAddEvent.embeds[0].footer = getEmbedFooter(perp)
+      guildBanAddEvent.embeds[0].footer = buildEmbedFooterField(perp)
       await send(guildBanAddEvent)
     }, 5000)
   }

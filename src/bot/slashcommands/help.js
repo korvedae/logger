@@ -1,6 +1,6 @@
 const Eris = require('eris')
 const { EMBED_COLORS, ALL_EVENTS, EVENT_HELP } = require('../utils/constants')
-const { getEmbedFooter, getAuthorField } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 
 module.exports = {
   name: 'help',
@@ -36,7 +36,7 @@ module.exports = {
             name: 'Donations',
             value: `If you like me and want to support my owner, you can contact \`@${process.env.BOT_CREATOR_NAME}\`.`
           }],
-          footer: getEmbedFooter(global.bot.user)
+          footer: buildEmbedFooterField(global.bot.user)
         }],
         flags: Eris.Constants.MessageFlags.EPHEMERAL
       }).catch(() => {})
@@ -55,8 +55,8 @@ module.exports = {
             name: '__Time: Message logging__',
             value: `${global.bot.user.username} cannot log messages upon deletion that it didn't see created first. Additionally, messages are kept for ${process.env.MESSAGE_HISTORY_DAYS} days, so messages older than that will not be logged upon deletion.`
           }],
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(interaction.member.user),
+          author: buildEmbedAuthorField(interaction.member.user),
+          footer: buildEmbedFooterField(global.bot.user),
           thumbnail: {
             url: interaction.member.user.dynamicAvatarURL(null, 64)
           }
@@ -72,8 +72,8 @@ module.exports = {
         embeds: [{
           title: `Help for ${eventName} event`,
           color: EMBED_COLORS.PURPLED_BLUE,
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(interaction.member.user),
+          author: buildEmbedAuthorField(interaction.member.user),
+          footer: buildEmbedFooterField(global.bot.user),
           description: `__**Description**__\n${EVENT_HELP[eventName]}\n\n*Not what you're looking for? Join [my support server](${process.env.DISCORD_SUPPORT_SERVER})*.`
         }],
         flags: Eris.Constants.MessageFlags.EPHEMERAL

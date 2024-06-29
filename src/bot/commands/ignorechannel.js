@@ -1,4 +1,4 @@
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 const ignoreChannel = require('../../db/interfaces/postgres/update').ignoreChannel
 
 module.exports = {
@@ -16,8 +16,8 @@ module.exports = {
         description: respStr,
         color: 3553599,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(message.author)
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user)
       }]
     })
   },

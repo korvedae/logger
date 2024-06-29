@@ -1,7 +1,7 @@
 const { Permission } = require('eris')
 const escape = require('markdown-escape')
 const send = require('../modules/webhooksender')
-const { getAuthorField } = require('../utils/embeds')
+const { buildEmbedAuthorField } = require('../utils/embeds')
 
 const CHANNEL_TYPE_MAP = {
   0: 'Text channel',
@@ -204,7 +204,7 @@ module.exports = {
     }
 
     if (log && user) {
-      channelUpdateEvent.embeds[0].author = getAuthorField(user)
+      channelUpdateEvent.embeds[0].author = buildEmbedAuthorField(user)
       if (channel.type === 13) {
         channelUpdateEvent.embeds[0].description = `Stage Channel **${channel.name}** was ${channel.topic === null ? 'closed' : 'opened'}`
       }

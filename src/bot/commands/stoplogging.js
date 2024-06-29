@@ -1,6 +1,6 @@
 const clearEventByID = require('../../db/interfaces/postgres/update').clearEventByID
 const cacheGuild = require('../utils/cacheGuild')
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 const setEventLogs = require('../../db/interfaces/postgres/update').setEventsLogId
 const eventList = require('../utils/constants').ALL_EVENTS
 
@@ -26,8 +26,8 @@ module.exports = {
           title: 'Any events associated with this channel have been undone.',
           color: 16711680,
           timestamp: new Date(),
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(message.author),
+          author: buildEmbedAuthorField(message.author),
+          footer: buildEmbedFooterField(global.bot.user),
           fields: []
         }]
       })

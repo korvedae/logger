@@ -1,4 +1,4 @@
-const { getAuthorField, getEmbedFooter } = require("../utils/embeds")
+const { buildEmbedAuthorField, buildEmbedFooterField } = require("../utils/embeds")
 
 module.exports = {
   func: async message => {
@@ -8,11 +8,11 @@ module.exports = {
         description: `Hey, I'm ${global.bot.user.username}! My **only** purpose is to, at your command, log everything to your configured channels. Use the slash commands to configure me! For more info, use \`/help\``,
         color: 3553599,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user),
         thumbnail: {
           url: global.bot.user.avatarURL
         },
-        author: getAuthorField(message.author),
         fields: [
           {
             name: 'Technical Details',

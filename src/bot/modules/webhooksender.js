@@ -4,7 +4,7 @@ const guildWebhookCacher = require('./guildWebhookCacher')
 const cacheGuild = require('../utils/cacheGuild')
 const statAggregator = require('./statAggregator')
 const enqueue = require('./bulkqueue')
-const { getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedFooterField } = require('../utils/embeds')
 const setEventsByChannelID = require('../../db/interfaces/postgres/update').setEventsLogId
 
 // const doNotAggregate = ['voiceStateUpdate', 'voiceChannelLeave', 'voiceChannelSwitch', 'guildMemberVerify']
@@ -52,7 +52,7 @@ module.exports = async pkg => {
     await guildWebhookCacher(pkg.guildID, guildSettings.getEventByName(pkg.eventName))
   } else if (webhook && !guildSettings.eventIsDisabled(pkg.eventName)) {
     if (!pkg.embeds[0].footer && !pkg.noFooter) {
-      pkg.embeds[0].footer = getEmbedFooter(global.bot.user)
+      pkg.embeds[0].footer = buildEmbedFooterField(global.bot.user)
     }
     if (!pkg.embeds[0].timestamp) {
       pkg.embeds[0].timestamp = new Date()

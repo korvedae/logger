@@ -1,5 +1,5 @@
 const { toggleLogBots } = require('../../db/interfaces/postgres/update')
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 
 module.exports = {
   func: async message => {
@@ -9,8 +9,8 @@ module.exports = {
         title: `${state ? 'I am now logging bot activity.' : 'I am no longer logging bot activity.'}`,
         color: 16711680,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(message.author),
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user),
         fields: []
       }]
     })

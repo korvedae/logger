@@ -1,6 +1,6 @@
 const cacheGuild = require('../utils/cacheGuild')
 const { displayUsername } = require('../utils/constants')
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 const deleteGuild = require('../../db/interfaces/postgres/delete').deleteGuild
 const createGuild = require('../../db/interfaces/postgres/create').createGuild
 
@@ -11,8 +11,8 @@ module.exports = {
         description: `Are you absolutely sure, ${displayUsername(message.author)} (${message.author.id})? Reply *yes* if so.`,
         color: 3553599,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(message.author)
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user)
       }]
     })
     let i = 0
@@ -27,8 +27,8 @@ module.exports = {
                 description: 'You didn\'t reply with *yes* within 10 seconds.',
                 color: 3553599,
                 timestamp: new Date(),
-                footer: getEmbedFooter(global.bot.user),
-                author: getAuthorField(message.author)
+                author: buildEmbedAuthorField(message.author),
+                footer: buildEmbedFooterField(global.bot.user)
               }]
             })
             msg.delete()
@@ -41,8 +41,8 @@ module.exports = {
             description: 'Alright, resetting guild settings.',
             color: 3553599,
             timestamp: new Date(),
-            footer: getEmbedFooter(global.bot.user),
-            author: getAuthorField(message.author)
+            author: buildEmbedAuthorField(message.author),
+            footer: buildEmbedFooterField(global.bot.user)
           }]
         })
         complete = true

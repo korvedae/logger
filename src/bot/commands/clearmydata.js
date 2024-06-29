@@ -1,4 +1,4 @@
-const { getEmbedFooter, getAuthorField } = require("../utils/embeds")
+const { buildEmbedFooterField, buildEmbedAuthorField } = require("../utils/embeds")
 
 module.exports = {
   func: async message => {
@@ -8,8 +8,8 @@ module.exports = {
         description: `To clear your data (messages), please contact \`@${process.env.BOT_CREATOR_NAME}\`. Remember: all messages stored are encrypted and automatically removed from the database after ${process.env.MESSAGE_HISTORY_DAYS} days.`,
         color: 16711680,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(message.author),
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user),
         fields: []
       }]
     })

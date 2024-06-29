@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const Eris = require('eris')
 const { EMBED_COLORS, displayUsername } = require('../utils/constants')
-const { getEmbedFooter, getAuthorField } = require('../utils/embeds')
+const { buildEmbedFooterField, buildEmbedAuthorField } = require('../utils/embeds')
 const { NewsThreadChannel, PrivateThreadChannel, PublicThreadChannel } = require('eris')
 
 let slashCommands = fs.readdirSync(path.resolve('src', 'bot', 'slashcommands')).map(filename => {
@@ -53,8 +53,8 @@ module.exports = {
                 title: 'Unable to run',
                 color: EMBED_COLORS.YELLOW_ORANGE,
                 description: `__${command.name}__ cannot be ran in a thread.`,
-                footer: getEmbedFooter(global.bot.user),
-                author: getAuthorField(interaction.member.user),
+                author: buildEmbedAuthorField(interaction.member.user),
+                footer: buildEmbedFooterField(global.bot.user),
                 thumbnail: {
                   url: interaction.member.user.dynamicAvatarURL(null, 64)
                 }
@@ -72,8 +72,8 @@ module.exports = {
                   title: 'Missing Permissions',
                   color: EMBED_COLORS.YELLOW_ORANGE,
                   description: `You are missing the following permissions to run ${command.name}: ${missingPermissions.map(perm => `\`${perm}\``).join(', ')}`,
-                  footer: getEmbedFooter(global.bot.user),
-                  author: getAuthorField(interaction.member.user),
+                  author: buildEmbedAuthorField(interaction.member.user),
+                  footer: buildEmbedFooterField(global.bot.user),
                   thumbnail: {
                     url: interaction.member.user.dynamicAvatarURL(null, 64)
                   }
@@ -92,8 +92,8 @@ module.exports = {
                   title: 'Bot Missing Permissions',
                   color: EMBED_COLORS.YELLOW_ORANGE,
                   description: `I need the following permissions to run ${command.name}: ${missingPermissions.map(perm => `\`${perm}\``).join(', ')}`,
-                  footer: getEmbedFooter(global.bot.user),
-                  author: getAuthorField(interaction.member.user),
+                  author: buildEmbedAuthorField(interaction.member.user),
+                  footer: buildEmbedFooterField(global.bot.user),
                   thumbnail: {
                     url: global.bot.user.dynamicAvatarURL(null, 64)
                   }

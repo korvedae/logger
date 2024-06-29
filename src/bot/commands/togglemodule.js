@@ -1,5 +1,5 @@
 const disableEvent = require('../../db/interfaces/postgres/update').disableEvent
-const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
+const { buildEmbedAuthorField, buildEmbedFooterField } = require('../utils/embeds')
 const eventList = require('../utils/constants').ALL_EVENTS
 
 module.exports = {
@@ -11,8 +11,8 @@ module.exports = {
           description: `The provided argument is invalid. Valid events: ${eventList.join(', ')}`,
           color: 16711680,
           timestamp: new Date(),
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(message.author)
+          author: buildEmbedAuthorField(message.author),
+          footer: buildEmbedFooterField(global.bot.user)
         }]
       })
     }
@@ -23,8 +23,8 @@ module.exports = {
         description: respStr,
         color: 3553599,
         timestamp: new Date(),
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(message.author)
+        author: buildEmbedAuthorField(message.author),
+        footer: buildEmbedFooterField(global.bot.user)
       }]
     })
   },

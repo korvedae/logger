@@ -1,6 +1,6 @@
 const sa = require('superagent')
 const { EMBED_COLORS, displayUsername } = require('../utils/constants.js')
-const { getEmbedFooter, getAuthorField } = require('../utils/embeds.js')
+const { buildEmbedFooterField, buildEmbedAuthorField } = require('../utils/embeds.js')
 
 module.exports = {
   name: 'archive',
@@ -15,8 +15,8 @@ module.exports = {
           url: interaction.member.user.dynamicAvatarURL(null, 64)
         },
         color: EMBED_COLORS.RED,
-        footer: getEmbedFooter(global.bot.user),
-        author: getAuthorField(interaction.member.user)
+        author: buildEmbedAuthorField(interaction.member.user),
+        footer: buildEmbedFooterField(global.bot.user)
       }]
     }).catch(() => {})
     if (!interaction.data.options || !interaction.data.options[0] || interaction.data.options[0].value > 1000 || interaction.data.options[0].value < 5) {
@@ -28,8 +28,8 @@ module.exports = {
             url: interaction.member.user.dynamicAvatarURL(null, 64)
           },
           color: EMBED_COLORS.RED,
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(interaction.member.user)
+          author: buildEmbedAuthorField(interaction.member.user),
+          footer: buildEmbedFooterField(global.bot.user)
         }]
       }).catch(() => {})
     }
@@ -44,8 +44,8 @@ module.exports = {
             url: interaction.member.user.dynamicAvatarURL(null, 64)
           },
           color: EMBED_COLORS.YELLOW_ORANGE,
-          footer: getEmbedFooter(global.bot.user),
-          author: getAuthorField(interaction.member.user)
+          author: buildEmbedAuthorField(interaction.member.user),
+          footer: buildEmbedFooterField(global.bot.user)
         }]
       })
     } catch (_) {}
@@ -64,8 +64,8 @@ module.exports = {
                 url: interaction.member.user.dynamicAvatarURL(null, 64)
               },
               color: EMBED_COLORS.GREEN,
-              footer: getEmbedFooter(global.bot.user),
-              author: getAuthorField(interaction.member.user)
+              author: buildEmbedAuthorField(interaction.member.user),
+              footer: buildEmbedFooterField(global.bot.user)
             }]
           }).catch(() => {})
         } else {
@@ -77,7 +77,7 @@ module.exports = {
                 url: interaction.member.user.dynamicAvatarURL(null, 64)
               },
               color: EMBED_COLORS.RED,
-              footer: getEmbedFooter(global.bot.user)
+              footer: buildEmbedFooterField(global.bot.user)
             }]
           }).catch(() => {})
           global.logger.error(err, res.body)
