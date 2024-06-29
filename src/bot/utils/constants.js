@@ -2,7 +2,7 @@
  * @param {import('eris').ExtendedUser | import('eris').Member | import('eris').User} user
  * @returns {string}
  */
-exports.displayUsername = (user) => `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`
+exports.displayUsername = (user) => user.id === global.bot.id ? global.botUserUsername : `${user.username}${user.discriminator === '0' ? '' : `#${user.discriminator}`}`
 
 exports.ALL_EVENTS = [
   'channelCreate',
