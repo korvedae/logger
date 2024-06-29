@@ -1,7 +1,7 @@
 const { Permission } = require('eris')
 const escape = require('markdown-escape')
 const send = require('../modules/webhooksender')
-const { buildEmbedAuthorField } = require('../utils/embeds')
+const { displayUsername } = require('../utils/constants')
 
 const CHANNEL_TYPE_MAP = {
   0: 'Text channel',
@@ -205,8 +205,9 @@ module.exports = {
 
     if (log && perp) {
       const member = channel.guild.members.get(perp.id)
-      channelDeleteEvent.embeds[0].author.name = `${displayUsername(perp)} ${member && member.nick ? `(${member.nick})` : ''}`
-      channelDeleteEvent.embeds[0].author.icon_url = perp.avatarURL
+      console.log({member})
+      channelUpdateEvent.embeds[0].author.name = `${displayUsername(perp)} ${member && member.nick ? `(${member.nick})` : ''}`
+      channelUpdateEvent.embeds[0].author.icon_url = perp.avatarURL
 
       if (channel.type === 13) {
         channelUpdateEvent.embeds[0].description = `Stage Channel **${channel.name}** was ${channel.topic === null ? 'closed' : 'opened'}`

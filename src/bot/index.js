@@ -5,7 +5,6 @@ const redisLock = require('../db/interfaces/redis/redislock')
 const indexCommands = require('../miscellaneous/commandIndexer')
 const cacheGuildInfo = require('./utils/cacheGuildSettings')
 const addBotListeners = require('./utils/addbotlisteners')
-const { displayUsername } = require('./utils/constants')
 
 require('dotenv').config()
 
