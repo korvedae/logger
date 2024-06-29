@@ -70,7 +70,6 @@ async function init () {
     defaultImageFormat: 'png',
     ...(process.env.USE_MAX_CONCURRENCY === 'true' ? { useMaxConcurrency: true } : {})
   })
-  global.botUserUsername = displayUsername(global.bot.user)
 
   global.bot.editStatus('dnd', {
     name: 'Bot is booting'
