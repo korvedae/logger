@@ -3,6 +3,7 @@ const cacheGuild = require('../utils/cacheGuild')
 const arrayCompare = require('../utils/arraycompare')
 const { displayUsername } = require('../utils/constants')
 const markdownEscape = require('markdown-escape')
+const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
 
 const canUseExternal = guild => {
   const logChannelID = global.bot.guildSettingsCache[guild.id].event_logs.guildMemberUpdate
@@ -28,10 +29,7 @@ module.exports = {
       guildID: guild.id,
       eventName: 'guildMemberUpdate',
       embeds: [{
-        author: {
-          name: memberUsername,
-          icon_url: member.avatarURL
-        },
+        author: getAuthorField(member),
         description: `${memberUsername} ${member.mention} ${member.nick ? `(${member.nick})` : ''} was updated`,
         fields: [{
           name: 'Changes',
@@ -64,10 +62,7 @@ module.exports = {
     } else if (oldMember?.pending && !member.pending && guild.features.includes('MEMBER_VERIFICATION_GATE_ENABLED')) {
       guildMemberUpdate.eventName = 'guildMemberVerify'
       guildMemberUpdate.embeds[0].description = `${member.mention} (${memberUsername}: \`${member.id}\`) has verified.`
-      guildMemberUpdate.embeds[0].author = {
-        name: `${memberUsername}`,
-        icon_url: member.avatarURL
-      }
+      guildMemberUpdate.embeds[0].author = getAuthorField(member)
       guildMemberUpdate.embeds[0].color = 0x1ced9a
       delete guildMemberUpdate.embeds[0].fields
       await send(guildMemberUpdate)
@@ -80,10 +75,7 @@ module.exports = {
       if (oldMemberHasBoostRole === newMemberHasBoostRole) return // something bugged and this was called when there wasn't really a boost update... although this doesn't log subsequent boosts by a current booster.
       embedCopy.eventName = 'guildMemberBoostUpdate'
       embedCopy.embeds[0].description = `${member.mention} has ${newMemberHasBoostRole ? 'boosted' : 'stopped boosting'} the server.`
-      embedCopy.embeds[0].author = {
-        name: memberUsername,
-        icon_url: member.avatarURL
-      }
+      embedCopy.embeds[0].author = getAuthorField(member)
       embedCopy.embeds[0].color = member.premiumSince ? 0x15cc12 : 0xeb4034
       delete embedCopy.embeds[0].fields
       await send(embedCopy)
@@ -123,10 +115,7 @@ module.exports = {
         guildMemberUpdate.embeds[0].fields[0].value = guildMemberUpdate.embeds[0].fields[0].value.substring(0, 1020) + '...'
       }
       guildMemberUpdate.embeds[0].color = roleColor
-      guildMemberUpdate.embeds[0].footer = {
-        text: displayUsername(perp),
-        icon_url: perp.avatarURL
-      }
+      guildMemberUpdate.embeds[0].footer = getEmbedFooter(perp)
       guildMemberUpdate.embeds[0].fields.push({
         name: 'ID',
         value: `\`\`\`ini\nUser = ${member.id}\nPerpetrator = ${perp.id}\`\`\``
@@ -138,14 +127,8 @@ module.exports = {
       const perpUsername = displayUsername(perp)
 
       guildMemberUpdate.embeds[0].description = `${memberUsername} (${member.mention}) ${member.communicationDisabledUntil ? 'was timed out' : 'had their timeout removed'}`
-      guildMemberUpdate.embeds[0].author = {
-        name: memberUsername,
-        icon_url: member.avatarURL
-      }
-      guildMemberUpdate.embeds[0].footer = {
-        text: perpUsername,
-        icon_url: perp.avatarURL
-      }
+      guildMemberUpdate.embeds[0].author = getAuthorField(member)
+      guildMemberUpdate.embeds[0].footer = getEmbedFooter(perp)
       guildMemberUpdate.embeds[0].fields = []
       guildMemberUpdate.embeds[0].fields.push({
         name: 'Timeout Creator',

@@ -1,25 +1,21 @@
 const send = require('../modules/webhooksender')
 const inviteCache = require('../modules/invitecache')
 const { displayUsername } = require('../utils/constants')
+const { getAuthorField } = require('../utils/embeds')
 
 module.exports = {
   name: 'guildMemberAdd',
   type: 'on',
   handle: async (guild, member) => {
-    const memberUsername = displayUsername(member)
-
     const GMAEvent = {
       guildID: guild.id,
       eventName: 'guildMemberAdd',
       embeds: [{
-        author: {
-          name: memberUsername,
-          icon_url: member.avatarURL
-        },
+        author: getAuthorField(member),
         description: `<@${member.id}> joined `,
         fields: [{
           name: 'Name',
-          value: `${memberUsername} (${member.id}) ${member.mention}`
+          value: `${displayUsername(member)} (${member.id}) ${member.mention}`
         }, {
           name: 'Joined At',
           value: `<t:${Math.round(Date.now() / 1000)}:F>`

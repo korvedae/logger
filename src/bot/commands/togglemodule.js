@@ -1,11 +1,9 @@
 const disableEvent = require('../../db/interfaces/postgres/update').disableEvent
-const { displayUsername } = require('../utils/constants')
+const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
 const eventList = require('../utils/constants').ALL_EVENTS
 
 module.exports = {
   func: async (message, suffix) => {
-    const messageAuthorUsername = displayUsername(message.author)
-
     const split = suffix.split(' ')
     if (!eventList.includes(split[0])) {
       return message.channel.createMessage({
@@ -13,14 +11,8 @@ module.exports = {
           description: `The provided argument is invalid. Valid events: ${eventList.join(', ')}`,
           color: 16711680,
           timestamp: new Date(),
-          footer: {
-            icon_url: global.bot.user.avatarURL,
-            text: global.botUserUsername
-          },
-          author: {
-            name: messageAuthorUsername,
-            icon_url: message.author.avatarURL
-          }
+          footer: getEmbedFooter(global.bot.user),
+          author: getAuthorField(message.author)
         }]
       })
     }
@@ -31,14 +23,8 @@ module.exports = {
         description: respStr,
         color: 3553599,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: global.botUserUsername
-        },
-        author: {
-          name: messageAuthorUsername,
-          icon_url: message.author.avatarURL
-        }
+        footer: getEmbedFooter(global.bot.user),
+        author: getAuthorField(message.author)
       }]
     })
   },

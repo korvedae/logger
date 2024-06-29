@@ -1,5 +1,5 @@
 const Eris = require('eris')
-const { getAuthorField } = require('../utils/embeds.js')
+const { getAuthorField, getEmbedFooter } = require('../utils/embeds.js')
 
 module.exports = {
   name: 'clearmydata',
@@ -10,10 +10,7 @@ module.exports = {
         description: `To clear your data (messages), please contact \`@${process.env.BOT_CREATOR_NAME}\`. Remember: all messages stored are encrypted and automatically removed from the database after ${process.env.MESSAGE_HISTORY_DAYS} days.`,
         color: 16711680,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: `${global.bot.user.username}#${global.bot.user.discriminator}`
-        },
+        footer: getEmbedFooter(global.bot.user),
         author: getAuthorField(interaction.member.user),
         fields: []
       }],

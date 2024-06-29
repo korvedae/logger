@@ -1,5 +1,6 @@
 const send = require('../modules/webhooksender')
 const { displayUsername } = require('../utils/constants')
+const { getEmbedFooter } = require('../utils/embeds')
 
 module.exports = {
   name: 'voiceStateUpdate',
@@ -46,10 +47,7 @@ module.exports = {
     })
     if (perp && perp.id && perp.username) {
       voiceStateUpdateEvent.embeds[0].fields[voiceStateUpdateEvent.embeds[0].fields.length - 1].value += `Perpetrator = ${perp.id}\`\`\``
-      voiceStateUpdateEvent.embeds[0].footer = {
-        text: displayUsername(perp),
-        icon_url: perp.avatarURL
-      }
+      voiceStateUpdateEvent.embeds[0].footer = getEmbedFooter(perp)
     }
     await send(voiceStateUpdateEvent)
   }

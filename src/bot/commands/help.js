@@ -1,4 +1,4 @@
-const { displayUsername } = require("../utils/constants")
+const { getAuthorField, getEmbedFooter } = require("../utils/embeds")
 
 module.exports = {
   func: async (message, suffix) => {
@@ -30,17 +30,11 @@ module.exports = {
         description: `Below, you can see my commands listed by name and description. To learn more about a command or view examples, use ${process.env.GLOBAL_BOT_PREFIX}help commandname.`,
         color: 3553599,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: global.botUserUsername
-        },
+        footer: getEmbedFooter(global.bot.user),
         thumbnail: {
           url: global.bot.user.avatarURL
         },
-        author: {
-          name: displayUsername(message.author),
-          icon_url: message.author.avatarURL
-        },
+        author: getAuthorField(message.author),
         fields: []
       }
       Object.values(global.bot.commands).forEach(command => {

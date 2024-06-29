@@ -1,4 +1,4 @@
-const { displayUsername } = require("../utils/constants")
+const { getAuthorField, getEmbedFooter } = require("../utils/embeds")
 
 module.exports = {
   func: async message => {
@@ -7,14 +7,8 @@ module.exports = {
         description: `Hi, you can invite me via [this link](https://discord.com/oauth2/authorize?client_id=${global.bot.user.id}). To see what invite is used for a member joining, you MUST grant **manage channels** and **manage server** for it to work (Discord does not send invite info to the bot otherwise)!`,
         color: 3553599,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: global.botUserUsername
-        },
-        author: {
-          name: displayUsername(message.author),
-          icon_url: message.author.avatarURL
-        }
+        footer: getEmbedFooter(global.bot.user),
+        author: getAuthorField(message.author)
       }]
     })
   },

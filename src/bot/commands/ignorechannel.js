@@ -1,5 +1,4 @@
-const { displayUsername } = require('../utils/constants')
-
+const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
 const ignoreChannel = require('../../db/interfaces/postgres/update').ignoreChannel
 
 module.exports = {
@@ -17,14 +16,8 @@ module.exports = {
         description: respStr,
         color: 3553599,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: global.botUserUsername
-        },
-        author: {
-          name: displayUsername(message.author),
-          icon_url: message.author.avatarURL
-        }
+        footer: getEmbedFooter(global.bot.user),
+        author: getAuthorField(message.author)
       }]
     })
   },

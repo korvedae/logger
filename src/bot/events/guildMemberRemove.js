@@ -2,6 +2,7 @@ const send = require('../modules/webhooksender')
 const prunecache = require('../modules/prunecache')
 const { User } = require('eris')
 const { displayUsername } = require('../utils/constants')
+const { getEmbedFooter } = require('../utils/embeds')
 
 module.exports = {
   name: 'guildMemberRemove',
@@ -48,10 +49,7 @@ module.exports = {
           name: 'User Information',
           value: `${memberUsername} (${member.id}) ${member.mention} ${member.bot ? '\nIs a bot' : ''}`
         }],
-        footer: {
-          text: displayUsername(perp),
-          icon_url: perp.avatarURL
-        }
+        footer: getEmbedFooter(perp)
       }]
       if (member.roles) {
         event.embeds[0].fields.push(rolesField, {
@@ -73,10 +71,7 @@ module.exports = {
     } else {
       // TODO: redo purge audit log stuff eventually (update: copy from patron bot eventually)
       event.embeds = [{
-        author: {
-          name: memberUsername,
-          icon_url: member.avatarURL
-        },
+        author: getAuthorField(member),
         color: 16711680,
         description: `${memberUsername} left the server`,
         fields: [{

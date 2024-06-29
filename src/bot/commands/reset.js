@@ -1,25 +1,18 @@
 const cacheGuild = require('../utils/cacheGuild')
 const { displayUsername } = require('../utils/constants')
+const { getAuthorField, getEmbedFooter } = require('../utils/embeds')
 const deleteGuild = require('../../db/interfaces/postgres/delete').deleteGuild
 const createGuild = require('../../db/interfaces/postgres/create').createGuild
 
 module.exports = {
   func: async message => {
-    const messageAuthorUsername = displayUsername(message.author)
-
     const msg = await message.channel.createMessage({
       embeds: [{
-        description: `Are you absolutely sure, ${messageAuthorUsername} (${message.author.id})? Reply *yes* if so.`,
+        description: `Are you absolutely sure, ${displayUsername(message.author)} (${message.author.id})? Reply *yes* if so.`,
         color: 3553599,
         timestamp: new Date(),
-        footer: {
-          icon_url: global.bot.user.avatarURL,
-          text: global.botUserUsername
-        },
-        author: {
-          name: displayUsername(messageAuthorUsername),
-          icon_url: message.author.avatarURL
-        }
+        footer: getEmbedFooter(global.bot.user),
+        author: getAuthorField(message.author)
       }]
     })
     let i = 0
@@ -34,14 +27,8 @@ module.exports = {
                 description: 'You didn\'t reply with *yes* within 10 seconds.',
                 color: 3553599,
                 timestamp: new Date(),
-                footer: {
-                  icon_url: global.bot.user.avatarURL,
-                  text: global.botUserUsername
-                },
-                author: {
-                  name: messageAuthorUsername,
-                  icon_url: message.author.avatarURL
-                }
+                footer: getEmbedFooter(global.bot.user),
+                author: getAuthorField(message.author)
               }]
             })
             msg.delete()
@@ -54,14 +41,8 @@ module.exports = {
             description: 'Alright, resetting guild settings.',
             color: 3553599,
             timestamp: new Date(),
-            footer: {
-              icon_url: global.bot.user.avatarURL,
-              text: global.botUserUsername
-            },
-            author: {
-              name: messageAuthorUsername,
-              icon_url: message.author.avatarURL
-            }
+            footer: getEmbedFooter(global.bot.user),
+            author: getAuthorField(message.author)
           }]
         })
         complete = true
