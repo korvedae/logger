@@ -20,11 +20,13 @@ async function addItem (messageAsArray) {
 
 async function submitBatch (batchSize) {
   const toSubmit = batch.splice(0, batchSize)
+
   const poolClient = await pool.getPostgresClient()
   await poolClient.query(format('INSERT INTO messages (id, author_id, content, attachment_b64, ts) VALUES %L ON CONFLICT DO NOTHING', toSubmit))
   poolClient.release()
+
   global.timesSubmitted += 1
-  global.totalMessagesSubmitted += batchSize
+  global.totalMessagesSubmitted += toSubmit.length
 
   const msg = `Submitted ${toSubmit.length} messages within batch #${global.timesSubmitted} (${global.totalMessagesSubmitted} total).`;
   global.logger.info(msg)

@@ -1,6 +1,7 @@
 const Eris = require('eris')
 const cluster = require('cluster')
 const Sentry = require('@sentry/node')
+const messageBatcher = require('../db/messageBatcher')
 const redisLock = require('../db/interfaces/redis/redislock')
 const indexCommands = require('../miscellaneous/commandIndexer')
 const cacheGuildInfo = require('./utils/cacheGuildSettings')
@@ -108,8 +109,17 @@ process.on('exit', (code) => {
 
 process.on('SIGINT', async () => {
   global.logger.error('SIGINT caught. Cleaning up and exiting...')
-  require('../db/clients/postgres').end()
-  process.exit()
+  // Attempt to submit messages in batch to psql before terminating connections.
+  // BUG: Sometimes this works, sometimes it doesn't. There's probably a race condition here.
+  // NB: The `process.on('exit')` callback seems to be called even if we don't explicitly `process.exit`(?)
+  const numToSubmit = messageBatcher.getMessageCount()
+  if (numToSubmit !== 0) {
+    global.logger.debug(`Submitting ${numToSubmit} messages from batch to psql...`)
+    const numSubmitted = await messageBatcher.submitBatch(numToSubmit)
+    // BUG: Never gets outputted, even when messages are stored. Probably due to aforementioned race condition.
+    global.logger.info(`Successfully submitted ${numSubmitted} messages from the batch to psql before terminating connections.`)
+    process.exit()
+  } else process.exit()
 })
 
 process.on('unhandledRejection', (e) => {
