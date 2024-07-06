@@ -1,4 +1,5 @@
 const sa = require('superagent')
+const { getMessage } = require('../../db/messageBatcher')
 const getMessagesByIds = require('../../db/interfaces/postgres/read').getMessagesByIds
 const send = require('../modules/webhooksender')
 const { EMBED_COLORS, displayUsername } = require('../utils/constants')
@@ -6,29 +7,37 @@ const { EMBED_COLORS, displayUsername } = require('../utils/constants')
 module.exports = {
   name: 'messageDeleteBulk',
   type: 'on',
-  handle: async messages => {
-    if (messages.length === 0) return // TODO: TEST!
+  handle: async deletedMessages => {
+    if (deletedMessages.length === 0) return // TODO: TEST!
 
     if (!process.env.PASTE_SITE_ROOT_URL) {
-      if (!messages[0].guildId) return;
+      if (!deletedMessages[0].guildId) return;
   
       return send({
-        guildID: messages[0].guildId,
+        guildID: deletedMessages[0].guildId,
         eventName: 'messageDeleteBulk',
         embeds: [{
-            description: `${messages.length} messages were bulk deleted. :warning: The bot owner hasn't configured a paste site so contents of deleted messages not shown. :warning:`,
+            description: `${deletedMessages.length} messages were bulk deleted. :warning: The bot owner hasn't configured a paste site so contents of deleted messages not shown. :warning:`,
             color: EMBED_COLORS.YELLOW_ORANGE,
         }]
       });
     }
 
-    const dbMessages = await getMessagesByIds(messages.map(m => m.id))
-    await paste(dbMessages, messages[0].channel.guild.id)
+    let messagesFromBatch = [];
+    let messagesToFetchFromDb = [];
+    for (const deletedMessage of deletedMessages) {
+      const messageFromBatch = getMessage(deletedMessage.id)
+      if (messageFromBatch === undefined) messagesToFetchFromDb.push(deletedMessage.id)
+      else messagesFromBatch.push(messageFromBatch)
+    }
+
+    const messagesFromDb = await getMessagesByIds(messagesToFetchFromDb)
+    await paste([...messagesFromBatch, ...messagesFromDb], deletedMessages[0].channel.guild.id)
   }
 }
 
 async function paste (messages, guildID) {
-  if (!messages) return
+  if (!messages || messages.length === 0) return
   const messageDeleteBulkEvent = {
     guildID: guildID,
     eventName: 'messageDeleteBulk',

@@ -47,6 +47,8 @@ async function decryptMessageDoc (message) {
 }
 
 async function getMessagesByIds (messageIds) {
+  if (messageIds.length === 0) return []
+
   const message = await pool.query('SELECT * FROM messages WHERE id = ANY ($1)', [messageIds])
   if (message.rows.length === 0) return null
   const decryptedMessages = []
