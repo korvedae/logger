@@ -8,7 +8,8 @@ Logger is a powerful [Discord](https://discordapp.com) bot meant to give staff m
 
 ## Installation
 
-You are mostly on your own selfhosting this version. Required applications:
+~~You are mostly on your own selfhosting this version.~~ Reference [SETUP.md](SETUP.md) for "in-depth" walkthrough.
+Required applications:
 - PostgreSQL 11
 - Redis
 - NodeJS 14+ (14.5.0)
